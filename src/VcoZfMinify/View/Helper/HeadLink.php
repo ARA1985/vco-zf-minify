@@ -67,8 +67,12 @@ class HeadLink extends HeadLinkOriginal {
      *
      * @var bool
      */
-    protected $inline;    
-
+    protected $inline;   
+    /**
+    *
+    * @var string
+    */
+    protected $version;
     /**
      * Constructor
      *
@@ -83,6 +87,7 @@ class HeadLink extends HeadLinkOriginal {
         $this->minifyDocRootPath = getcwd() . '/' . $this->minifyDocRootDir . '/';
         $this->minifyCacheDir = trim($this->minifyConfig['cacheDir'],'/\ ');
         $this->minifyCachePath = $this->minifyDocRootPath . $this->minifyCacheDir;
+        $this->minifyVersion = $this->minifyConfig['version'];
 
         if(!file_exists($this->minifyCachePath) && mkdir($this->minifyCachePath, 0755, true) === false) {
           throw new \Exception("Cache dir does not exist and could not be created - '$this->minifyCachePath'");
@@ -176,7 +181,7 @@ class HeadLink extends HeadLinkOriginal {
                   'type'=>'text/css',
                   'rel' => 'stylesheet',
                   'media' => $media,
-                  'href' => $minifiedFileBasePath,
+                  'href' => $minifiedFileBasePath . '?' . $this->minifyVersion,
                   'conditionalStylesheet' => false
                 )
               );
